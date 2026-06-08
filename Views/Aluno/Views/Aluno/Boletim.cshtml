@@ -1,0 +1,71 @@
+@{
+    ViewData["Title"] = "Boletim";
+
+    var disciplinas = ViewBag.Disciplinas as List<string>;
+    var notas = ViewBag.Notas as List<double>;
+
+    double soma = 0;
+}
+
+<h1>Boletim de Notas</h1>
+
+<table border="1" cellpadding="8">
+    <tr>
+        <th>Disciplina</th>
+        <th>Nota</th>
+        <th>Status</th>
+        <th>Classificação</th>
+    </tr>
+
+    @for (int i = 0; i < disciplinas.Count; i++)
+    {
+        soma += notas[i];
+
+        string classificacao = "";
+
+        switch ((int)notas[i])
+        {
+            case int n when n >= 9:
+                classificacao = "A";
+                break;
+
+            case int n when n >= 7:
+                classificacao = "B";
+                break;
+
+            case int n when n >= 5:
+                classificacao = "C";
+                break;
+
+            default:
+                classificacao = "D";
+                break;
+        }
+
+        <tr>
+            <td>@disciplinas[i]</td>
+            <td>@notas[i]</td>
+
+            @if (notas[i] >= 6)
+            {
+                <td style="color:green">
+                    Aprovado
+                </td>
+            }
+            else
+            {
+                <td style="color:red">
+                    Reprovado
+                </td>
+            }
+
+            <td>@classificacao</td>
+        </tr>
+    }
+</table>
+
+@{
+    double media = soma / notas.Count;
+}
+
+<h3>Média Geral: @media.ToString("F2")</h3>
